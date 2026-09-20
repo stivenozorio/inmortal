@@ -44,14 +44,26 @@ Dice «Colombia». Cámbialo por la ciudad o el nombre del estudio.
 
 ## 5. Dominio y metadatos  ·  `index.html`, `<head>`
 
-Reemplaza `https://inmortaltatts.com/` por el dominio definitivo en:
+Ahora apuntan al despliegue actual: **https://inmortalhxrr.vercel.app**
+
+Si contratas un dominio propio, cámbialo en los seis sitios donde aparece:
 
 - `<link rel="canonical">`
 - `og:url` y `og:image`
 - `twitter:image`
 - el bloque JSON-LD (`url`, `image`)
 
-La imagen para redes ya está generada en `assets/img/og-image.jpg`.
+Estas URLs deben ser **absolutas y públicas**: la vista previa de WhatsApp,
+Instagram o Facebook descarga la imagen desde ahí. Si el dominio no existe
+o la imagen no está publicada, el enlace se comparte sin vista previa.
+
+La imagen para redes está en `assets/img/og-image.jpg` (1200x630, 87 KB).
+
+### Al cambiar de dominio o de imagen
+
+WhatsApp y Facebook guardan la vista previa en caché durante días. Pasa la
+URL por https://developers.facebook.com/tools/debug/ y pulsa
+«Scrape Again» para forzar el refresco.
 
 ---
 
