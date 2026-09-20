@@ -12,7 +12,7 @@ Uso: python3 tools/build_assets.py
 """
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -131,36 +131,54 @@ def build_grain():
 
 
 def build_social(word):
-    """Open Graph 1200x630 y favicons, compuestos con los assets de marca."""
+    """Open Graph 1200x630 y favicons.
+
+    La tarjeta de enlace usa la ilustración de la serpiente a sangre: es el
+    recurso que mejor identifica a la marca en un feed. Encima, un degradado
+    hacia el azul-negro y la marca denominativa.
+    """
     print("social / favicon:")
     W, H = 1200, 630
+
+    # Fondo: azul-negro con luz roja y base borgoña (la misma del hero).
     base = Image.new("RGB", (W, H), DEEP_BG)
     glow = Image.new("RGB", (W, H), DEEP_BG)
-    d = ImageDraw.Draw(glow)
-    # Halo rojo difuso arriba a la derecha + base borgona.
-    d.ellipse((W * 0.52, -H * 0.75, W * 1.28, H * 0.55), fill=BRAND_RED)
-    d.ellipse((-W * 0.25, H * 0.45, W * 0.75, H * 1.85), fill=BURGUNDY)
-    glow = glow.filter(ImageFilter.GaussianBlur(150))
-    base = Image.blend(base, glow, 0.5)
-    base = Image.blend(base, Image.new("RGB", (W, H), PRIMARY_BG), 0.28)
+    dg = ImageDraw.Draw(glow)
+    dg.ellipse((W * 0.52, -H * 0.45, W * 1.30, H * 1.05), fill=BRAND_RED)
+    dg.ellipse((-W * 0.20, H * 0.60, W * 0.65, H * 1.95), fill=BURGUNDY)
+    glow = glow.filter(ImageFilter.GaussianBlur(170))
+    base = Image.blend(base, glow, 0.26)
 
-    mark = Image.open(OUT / "mark.png")
-    mh = 250
-    mark_r = mark.resize((round(mark.width * mh / mark.height), mh), Image.LANCZOS)
-    logo_w = 620
+    # La serpiente entra por la derecha. Su fondo es el mismo azul-negro del
+    # lienzo, así que se funde con "lighten": sólo queda la tinta.
+    snake = Image.open(SRC / "snake.jpg").convert("RGB")
+    sh = int(H * 1.16)
+    sw = round(snake.width * sh / snake.height)
+    art = snake.resize((sw, sh), Image.LANCZOS)
+
+    mask = Image.new("L", (sw, sh), 0)
+    dm = ImageDraw.Draw(mask)
+    dm.ellipse((sw * 0.00, sh * 0.19, sw * 1.00, sh * 0.89), fill=255)
+    mask = mask.filter(ImageFilter.GaussianBlur(sw * 0.12))
+
+    layer = Image.new("RGB", (W, H), DEEP_BG)
+    layer.paste(art, (W - sw + 18, (H - sh) // 2), mask)
+    base = ImageChops.lighter(base, layer)
+
+    # Marca denominativa a la izquierda, con aire.
+    logo_w = 430
     logo_r = word.resize((logo_w, round(word.height * logo_w / word.width)), Image.LANCZOS)
-
-    total = mark_r.width + 56 + logo_r.width
-    x = (W - total) // 2
-    base.paste(mark_r, (x, (H - mark_r.height) // 2), mark_r)
-    base.paste(logo_r, (x + mark_r.width + 56, (H - logo_r.height) // 2), logo_r)
+    lx, ly = 78, (H - logo_r.height) // 2 - 14
+    base.paste(logo_r, (lx, ly), logo_r)
 
     d2 = ImageDraw.Draw(base)
+    d2.rectangle((lx, ly + logo_r.height + 34, lx + 96, ly + logo_r.height + 37), fill=BRAND_RED)
     d2.rectangle((0, H - 6, W, H), fill=BRAND_RED)
     base.save(OUT / "og-image.jpg", "JPEG", quality=86, optimize=True, progressive=True)
     print(f"  og-image.jpg  {W}x{H}")
 
     # Favicons: simbolo sobre fondo azul-negro.
+    mark = Image.open(OUT / "mark.png")
     for size, name in ((512, "favicon-512"), (180, "apple-touch-icon"), (32, "favicon-32")):
         pad = round(size * 0.16)
         canvas = Image.new("RGBA", (size, size), DEEP_BG + (255,))
