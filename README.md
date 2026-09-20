@@ -23,8 +23,10 @@ assets/
   img/                     Derivados web (logo, símbolo, serpiente, social)
   img/portfolio/source/    Fotografías originales, tal como llegan del móvil
   img/portfolio/           Versiones web (520 / 720 / 900 px en AVIF y WebP)
-  video/estudio.mp4        Video del estudio (por ahora no se usa en la web)
+  video/source/            Video original del estudio
+  video/                   Video listo para web (MP4 + WebM + póster)
 tools/build_portfolio.py   Prepara las fotos del portafolio y del artista
+tools/build_video.py       Prepara el video del interludio
 tools/build_assets.py      Regenera los derivados de marca
 tools/fetch_fonts.sh       Vuelve a descargar las fuentes autoalojadas
 CONTENIDO.md               Qué textos hay que revisar antes de publicar
@@ -78,6 +80,25 @@ oculta.
 
 Para cambiar la fotografía del artista, apunta otra en `ARTISTA` dentro del
 mismo script.
+
+## El interludio en video
+
+Entre Proceso y Cotización va una pieza terminada en movimiento
+(`assets/video/`). Se reproduce sola, **en silencio y en bucle**, solo
+mientras está a la vista, y no se descarga hasta ese momento
+(`preload="none"`). Con `prefers-reduced-motion` o ahorro de datos activos
+no se reproduce: queda el póster y un botón para verlo a voluntad.
+
+Para cambiar el video, deja el nuevo en `assets/video/source/estudio.mp4` y
+ejecuta:
+
+```bash
+pip install imageio-ffmpeg
+python3 tools/build_video.py
+```
+
+El script quita el audio, normaliza el tamaño, genera MP4 y WebM y saca el
+póster del segundo 6.
 
 ## Regenerar los assets derivados
 

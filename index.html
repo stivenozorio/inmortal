@@ -235,17 +235,26 @@
         <a class="btn btn--ghost" data-reveal href="#cotizar" data-magnetic>Cuéntame tu idea</a>
       </div>
 
-      <!-- Foto real del estudio. Para cambiarla: deja la nueva en
-           assets/img/portfolio/source/, apúntala en ARTISTA dentro de
+      <!-- Fotos reales del estudio. Para cambiarlas: deja las nuevas en
+           assets/img/portfolio/source/, apúntalas en ARTISTA dentro de
            tools/build_portfolio.py y ejecuta el script. -->
-      <figure class="artist__photo" data-reveal="right">
-        <picture>
-          <source type="image/avif" srcset="assets/img/artist-600.avif 600w, assets/img/artist-900.avif 900w" sizes="(min-width: 860px) 40vw, 92vw">
-          <source type="image/webp" srcset="assets/img/artist-600.webp 600w, assets/img/artist-900.webp 900w" sizes="(min-width: 860px) 40vw, 92vw">
-          <img data-parallax="0.08" src="assets/img/artist-900.jpg" width="900" height="1200" loading="lazy" decoding="async" alt="El artista de Inmortal Tatts tatuando un antebrazo bajo la luz roja del estudio.">
-        </picture>
-        <figcaption>Inmortal Tatts — Black Work / Tattoo Art</figcaption>
-      </figure>
+      <div class="artist__media" data-reveal="right">
+        <figure class="artist__photo artist__photo--main">
+          <picture>
+            <source type="image/avif" srcset="assets/img/artist-600.avif 600w, assets/img/artist-900.avif 900w" sizes="(min-width: 860px) 40vw, 92vw">
+            <source type="image/webp" srcset="assets/img/artist-600.webp 600w, assets/img/artist-900.webp 900w" sizes="(min-width: 860px) 40vw, 92vw">
+            <img data-parallax="0.08" src="assets/img/artist-900.jpg" width="900" height="1200" loading="lazy" decoding="async" alt="El artista de Inmortal Tatts tatuando un antebrazo bajo la luz roja del estudio.">
+          </picture>
+        </figure>
+        <figure class="artist__photo artist__photo--sub">
+          <picture>
+            <source type="image/avif" srcset="assets/img/artist-sub-591.avif 591w" sizes="(min-width: 860px) 20vw, 46vw">
+            <source type="image/webp" srcset="assets/img/artist-sub-591.webp 591w" sizes="(min-width: 860px) 20vw, 46vw">
+            <img src="assets/img/artist-sub-591.jpg" width="591" height="1051" loading="lazy" decoding="async" alt="El artista trabajando un lettering en el antebrazo de un cliente.">
+          </picture>
+        </figure>
+        <p class="artist__credit">Inmortal Tatts — Black Work / Tattoo Art</p>
+      </div>
     </div>
   </section>
 
@@ -295,6 +304,28 @@
         </li>
       </ol>
     </div>
+  </section>
+
+  <!-- Interludio: pieza terminada en movimiento -->
+  <section class="reel" aria-label="Pieza terminada en movimiento">
+   <div class="wrap reel__inner">
+    <div class="reel__copy" data-reveal>
+      <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Pieza terminada</p>
+      <h2 class="reel__title">Espalda<br><em>completa</em></h2>
+      <p class="reel__note">Negro sólido, estructura ornamental y color sobre la espalda entera. Una pieza de varias sesiones.</p>
+    </div>
+    <figure class="reel__media" data-reveal="clip">
+      <video class="reel__video" id="reelVideo" width="576" height="1024"
+             poster="assets/video/estudio-poster.jpg"
+             muted loop playsinline preload="none" disablepictureinpicture>
+        <source src="assets/video/estudio.webm" type="video/webm">
+        <source src="assets/video/estudio.mp4" type="video/mp4">
+      </video>
+      <span class="reel__veil" aria-hidden="true"></span>
+      <button class="reel__play" id="reelPlay" type="button" hidden>Reproducir</button>
+      <figcaption class="reel__caption">Inmortal Tatts · pieza terminada</figcaption>
+    </figure>
+   </div>
   </section>
 
   <!-- 14 — Cotización -->

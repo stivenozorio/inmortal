@@ -66,6 +66,17 @@ CATALOGO = [
     ("IMG_5720", "pulpo-brazo", "Pulpo", "Black & Grey",
      "Pulpo japonés entre nubes tatuado en la manga, en negro y gris con acentos rojos."),
 
+    ("IMG_5744", "dragon-espalda-perfil", "Dragón · de perfil", "Black & Grey",
+     "Dragón de espalda visto de perfil, con la manga floral del otro brazo."),
+    ("IMG_5746", "dragon-espalda-completa", "Dragón · espalda completa", "Black & Grey",
+     "Vista completa del dragón japonés tatuado en la espalda."),
+    ("IMG_5739", "dragon-espalda-detalle", "Dragón · detalle", "Black & Grey",
+     "Detalle de la cabeza del dragón de espalda, en negro y gris."),
+    ("IMG_5716", "guerrera-azteca-detalle", "Guerrera azteca · detalle", "Black & Grey",
+     "Detalle del rostro de la guerrera azteca tatuada en el hombro."),
+    ("IMG_5726", "manga-religiosa-brazo", "Manga religiosa · brazo completo", "Black & Grey",
+     "Vista completa de la manga religiosa desde el hombro hasta la muñeca."),
+
     ("IMG_5738", "elefante-mandala", "Elefante y mandala", "Ornamental",
      "Elefante con mandala y geometría ornamental tatuado en el muslo."),
     ("IMG_5722", "rostro-dotwork", "Rostro en puntillismo", "Ornamental",
@@ -73,6 +84,8 @@ CATALOGO = [
 
     ("IMG_5719", "criatura-color", "Criatura", "Color",
      "Criatura ilustrada con cuernos y aura en tonos rosas y morados tatuada en el brazo."),
+    ("IMG_5745", "criatura-color-detalle", "Criatura · detalle", "Color",
+     "Detalle de la criatura ilustrada en rosas y morados tatuada en el brazo."),
     ("IMG_5721", "escarabajo-color", "Escarabajo", "Color",
      "Escarabajo con alas abiertas en verdes y azules tatuado en el antebrazo."),
     ("IMG_5728", "pecho-japones", "Pecho japonés", "Color",
@@ -87,15 +100,16 @@ CROPS = {
     "IMG_5714": (185, 1110),
 }
 
-# Fotografía del artista en la sección "Behind the ink".
-ARTISTA = ("IMG_5713", "artist",
-           "El artista de Inmortal Tatts tatuando un antebrazo bajo la luz roja del estudio.")
+# Fotografías de la sección "Behind the ink": principal y secundaria.
+ARTISTA = [
+    ("IMG_5713", "artist",
+     "El artista de Inmortal Tatts tatuando un antebrazo bajo la luz roja del estudio."),
+    ("IMG_5742", "artist-sub",
+     "El artista trabajando un lettering en el antebrazo de un cliente."),
+]
 
-# Quedan en source/ sin publicar (tomas repetidas de la misma pieza o de sesión).
-# Para publicarlas basta añadirlas a CATALOGO:
-#   IMG_5716 (guerrera azteca, otra toma)   IMG_5726 (manga religiosa, otra toma)
-#   IMG_5739 / IMG_5744 / IMG_5746 (dragón de espalda, otras tomas)
-#   IMG_5745 (criatura, otra toma)          IMG_5742 (sesión: retrato alternativo del artista)
+# Todo el material enviado está en uso: 32 piezas en el portafolio, dos fotos
+# en la sección del artista y el video en el interludio (tools/build_video.py).
 
 
 def trim_bars(img, name=None):
@@ -147,9 +161,10 @@ def main():
                        f"w: {w}, h: {h}, ws: {real}, "
                        f"alt: '{alt}' }}")
 
-    img, _, _ = trim_bars(Image.open(SRC / f"{ARTISTA[0]}.jpeg"), ARTISTA[0])
-    variants(img, ARTISTA[1], ROOT / "assets" / "img", (600, 900))
-    print(f"  artista: {ARTISTA[0]} -> assets/img/artist-{{600,900}}")
+    for src, slug, _alt in ARTISTA:
+        img, _, _ = trim_bars(Image.open(SRC / f"{src}.jpeg"), src)
+        real, _, _ = variants(img, slug, ROOT / "assets" / "img", (600, 900))
+        print(f"  artista: {src} -> assets/img/{slug}-{real}")
 
     print("\n--- pegar en assets/js/portfolio-data.js ---")
     print("window.PORTFOLIO = [\n" + ",\n".join(entries) + "\n];")

@@ -7,28 +7,28 @@ Cada punto pendiente está marcado en el código con `<!-- EDITABLE: ... -->`.
 
 ---
 
-## 1. Fotografías del portafolio  ·  hecho, con decisiones que revisar
+## 1. Fotografías del portafolio  ·  hecho
 
-Publicadas **26 piezas** de las 34 fotos enviadas, repartidas en cuatro
-categorías: Black Work, Black & Grey, Ornamental y Color.
+Publicadas **32 piezas** en cuatro categorías: Black Work, Black & Grey,
+Ornamental y Color. Todo el material enviado está en uso.
 
-Tres cosas que conviene que revises:
+Dos decisiones que conviene que revises:
 
 - **Categoría «Color».** El encargo listaba Black Work, Black & Grey,
   Abstract, Ornamental y Custom, pero en el material hay piezas a color
   (escarabajo, criatura, pecho japonés, manga japonesa) y no hay nada
   abstracto ni claramente «custom». La regla era mostrar solo categorías
   reales, así que se creó Color y se dejaron fuera Abstract y Custom.
-- **Marca de agua.** Cuatro fotos llevan `@carlosherrera.art` incrustado
-  (lirio y polilla, pulpo, y alguna más). Se dejaron tal cual: quitar el
-  crédito de alguien no es una decisión que tome el sitio. Si esa cuenta es
-  tuya y prefieres publicarlas sin marca, envía los originales limpios.
-- **Tomas sin publicar.** Quedaron guardadas en
-  `assets/img/portfolio/source/` ocho fotos que repiten pieza (otra toma
-  del dragón de espalda, de la guerrera azteca, de la manga religiosa y de
-  la criatura) más una foto de sesión. Se dejaron fuera para que la galería
-  no repita la misma pieza cuatro veces. Publicarlas es añadir su línea en
-  `tools/build_portfolio.py`; están listadas al final de ese archivo.
+- **Marca de agua.** Cuatro fotos llevan `@carlosherrera.art` incrustado.
+  Se dejaron tal cual: quitar el crédito de alguien no es una decisión que
+  tome el sitio. Si esa cuenta es tuya y prefieres publicarlas sin marca,
+  envía los originales limpios.
+
+Las tomas repetidas de una misma pieza se publicaron con nombre propio
+(«Dragón · de perfil», «Dragón · detalle», «Guerrera azteca · detalle»…)
+para que se lean como documentación de un proyecto grande y no como una
+repetición. Si prefieres una galería más corta, basta con borrar esas
+líneas de `assets/js/portfolio-data.js`.
 
 ## 2. El artista  ·  `index.html`, sección `#artista`
 
@@ -39,20 +39,21 @@ Tres cosas que conviene que revises:
 | Especialidad | «Black Work» |
 | Enfoque | «Diseño custom» |
 | Base (ciudad / estudio) | «Colombia» |
-| Fotografía | lista: la sesión bajo la luz roja del estudio (IMG_5713) |
+| Fotografías | listas: la sesión bajo la luz roja y el retrato de perfil |
 
-Si prefieres un retrato tuyo mirando a cámara, o la otra foto de sesión
-(IMG_5742, de perfil tatuando), se cambia en `ARTISTA` dentro de
-`tools/build_portfolio.py`.
+Si prefieres un retrato tuyo mirando a cámara, se cambia en `ARTISTA`
+dentro de `tools/build_portfolio.py`.
 
 No se incluyeron premios, años de experiencia, certificaciones, clientes ni
 publicaciones: nada de eso estaba disponible y no se inventa.
 
-## 2b. Video del estudio
+## 2b. Video del estudio  ·  hecho
 
-`assets/video/estudio.mp4` (1,7 MB) quedó guardado pero **no se usa en la
-web**. Puede ir como fondo en silencio en la sección Black Work o en el CTA
-final; dilo y se monta con carga diferida para no penalizar el móvil.
+El video de la espalda completa es ahora un interludio entre Proceso y
+Cotización: vertical, en silencio, en bucle y solo mientras está a la
+vista. Texto de apoyo: «Espalda completa · negro sólido y color · Una pieza
+de varias sesiones». **Si el número de sesiones no es exacto, cámbialo**
+(`index.html`, clase `.reel__note`).
 
 ## 3. FAQ  ·  `index.html`, sección `#faq`
 

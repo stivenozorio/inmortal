@@ -525,6 +525,43 @@
     });
   })();
 
+  /* ---------- 7b. Interludio en video ------------------------------------ */
+  (function reel() {
+    var video = doc.getElementById('reelVideo');
+    var play = doc.getElementById('reelPlay');
+    if (!video) return;
+
+    var conn = navigator.connection || {};
+    var frugal = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
+
+    function start() {
+      video.preload = 'auto';
+      var p = video.play();
+      if (p && p.catch) p.catch(function () { play.hidden = false; });
+    }
+
+    // Con movimiento reducido o ahorro de datos no se reproduce solo:
+    // queda el póster y un botón para verlo a voluntad.
+    if (reduced || frugal) {
+      play.hidden = false;
+      play.addEventListener('click', function () {
+        play.hidden = true;
+        video.controls = true;
+        start();
+      });
+      return;
+    }
+
+    if (!('IntersectionObserver' in window)) { start(); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) start();
+        else if (!video.paused) video.pause();
+      });
+    }, { threshold: 0.25 });
+    io.observe(video);
+  })();
+
   /* ---------- 8. WhatsApp flotante y año -------------------------------- */
   (function floating() {
     var fab = doc.querySelector('.wa-float');
