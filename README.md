@@ -23,7 +23,8 @@ assets/
   img/                     Derivados web (logo, símbolo, serpiente, social)
   img/portfolio/source/    Fotografías originales, tal como llegan del móvil
   img/portfolio/           Versiones web (520 / 720 / 900 px en AVIF y WebP)
-  video/source/            Video original (vacío mientras no haya uno)
+  video/source/            Video original del estudio
+  video/                   Video listo para web (MP4 + WebM + póster)
 tools/build_portfolio.py   Prepara las fotos del portafolio y del artista
 tools/build_video.py       Prepara el video del interludio
 tools/build_assets.py      Regenera los derivados de marca
@@ -80,11 +81,10 @@ oculta.
 Para cambiar la fotografía del artista, apunta otra en `ARTISTA` dentro del
 mismo script.
 
-## El interludio en video  (ahora desactivado)
+## El interludio en video
 
-Entre Proceso y Cotización puede ir una pieza terminada en movimiento.
-La sección está comentada en `index.html` mientras no haya video cargado.
-Cuando lo esté: Se reproduce sola, **en silencio y en bucle**, solo
+Entre Proceso y Cotización va una pieza terminada en movimiento
+(`assets/video/`). Se reproduce sola, **en silencio y en bucle**, solo
 mientras está a la vista, y no se descarga hasta ese momento
 (`preload="none"`). Con `prefers-reduced-motion` o ahorro de datos activos
 no se reproduce: queda el póster y un botón para verlo a voluntad.
@@ -97,8 +97,9 @@ pip install imageio-ffmpeg
 python3 tools/build_video.py
 ```
 
-El script quita el audio, normaliza el tamaño, genera MP4 y WebM y saca el
-póster del segundo 6.
+El script quita el audio, no amplía el video si el original ya es más
+pequeño que el ancho objetivo, genera MP4 y WebM, y saca el póster del
+segundo indicado en `POSTER_AT` (ajústalo si el mejor fotograma es otro).
 
 ## Regenerar los assets derivados
 

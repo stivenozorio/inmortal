@@ -7,30 +7,39 @@ Cada punto pendiente está marcado en el código con `<!-- EDITABLE: ... -->`.
 
 ---
 
-## 1. Fotografías del portafolio  ·  pendiente
+## 1. Fotografías del portafolio  ·  hecho
 
-Las fotos anteriores se eliminaron a petición tuya para subir otras. La
-galería muestra ahora seis marcos provisionales hechos con los gráficos de
-marca, etiquetados «Próximamente»: no hay fotos de stock ni piezas
-inventadas.
+Publicadas **26 piezas** en cuatro categorías reales: Black Work,
+Black & Grey, Ornamental y Color. No se creó «Abstract» ni «Custom»
+porque el material recibido no tiene piezas claramente de esos estilos.
 
-Para publicar las nuevas:
+Tres cosas que conviene que revises:
 
-1. Deja los originales en `assets/img/portfolio/source/` (sirven tal cual
-   salen del móvil).
-2. Añade una línea por pieza a la tabla `CATALOGO` de
+- **`pulpo-brazo`** conserva la marca de agua `@carlosherrera_art`
+  incrustada en la foto. No se recorta ni se retoca el crédito de otra
+  persona sin que lo pidas tú.
+- **`criatura-color-3`** (una segunda foto de la misma pieza que
+  `criatura-color`, con peor luz) se dejó en `source/` sin publicar, para
+  no repetir el mismo tatuaje dos veces en la galería.
+- Del material de video recibido, cinco tomas no se usaron: cuatro repiten
+  piezas que ya están en foto o en el video elegido, y una
+  (`ee05e0f4-…mov`) muestra el logo de otra marca en la ropa de la
+  clienta. Quedaron documentadas al final de `tools/build_portfolio.py`
+  por si quieres usarlas como un segundo video más adelante.
+
+Para añadir o quitar piezas:
+
+1. Deja el original en `assets/img/portfolio/source/` (sirve tal cual sale
+   del móvil).
+2. Añade o borra su línea en la tabla `CATALOGO` de
    `tools/build_portfolio.py`.
 3. Ejecuta `python3 tools/build_portfolio.py` y pega en
-   `assets/js/portfolio-data.js` la lista que imprime; borra de ahí las
-   líneas `slot-0x` de los marcos provisionales.
+   `assets/js/portfolio-data.js` la lista que imprime.
 
-Categorías sugeridas: `Black Work`, `Black & Grey`, `Ornamental`, `Color`,
-`Custom`. Solo aparecen en el filtro las que tengan piezas publicadas.
+Las categorías del filtro salen de las piezas publicadas: solo aparece la
+que realmente tiene trabajo cargado.
 
-Las fotos borradas siguen en el historial de Git por si hiciera falta
-recuperar alguna.
-
-## 2. El artista  ·  `index.html`, sección `#artista`
+## 2. El artista  ·  `index.html`, sección `#artista`  ·  foto hecha
 
 | Campo | Estado |
 |---|---|
@@ -39,27 +48,31 @@ recuperar alguna.
 | Especialidad | «Black Work» |
 | Enfoque | «Diseño custom» |
 | Base (ciudad / estudio) | «Chile» |
-| Fotografía | **pendiente**, marco provisional |
+| Fotografía | lista: dos fotos del estudio bajo luz roja |
 
-La foto se prepara apuntándola en `ARTISTA` dentro de
-`tools/build_portfolio.py`. Admite dos: la principal y una segunda que se
-monta superpuesta (duplica la figura con la clase `artist__photo--sub`).
+Para cambiarlas, apúntalas en `ARTISTA` dentro de
+`tools/build_portfolio.py` (admite dos: la principal y una segunda que se
+monta superpuesta).
 
 No se incluyeron premios, años de experiencia, certificaciones, clientes ni
 publicaciones: nada de eso estaba disponible y no se inventa.
 
-## 2b. Interludio en video  ·  desactivado
+## 2b. Interludio en video  ·  hecho
 
-La sección quedó comentada en `index.html` al eliminar el video. Los
-estilos y el script siguen en su sitio: para reactivarla, deja el video en
-`assets/video/source/estudio.mp4`, ejecuta `python3 tools/build_video.py` y
-quita el comentario que empieza en «INTERLUDIO EN VIDEO — desactivado».
+Entre Proceso y Cotización va el video de la espalda completa (negro
+sólido, estructura ornamental y peonías a color), en silencio, en bucle y
+solo mientras está a la vista. El texto dice «Una pieza de varias
+sesiones»: si el número real de sesiones es otro, ajústalo en
+`index.html`, clase `.reel__note`.
 
-## 2c. Sección Black Work  ·  `index.html`, `#black-work`
+Para cambiar el video: deja el nuevo en `assets/video/source/estudio.mp4`
+y ejecuta `python3 tools/build_video.py`.
 
-Vuelve a mostrar la ilustración de la serpiente. El encargo pedía ahí una
-fotografía grande: cuando tengas una pieza de Black Work que te guste,
-cámbiala (hay un comentario en el código indicando dónde).
+## 2c. Sección Black Work  ·  `index.html`, `#black-work`  ·  hecho
+
+Muestra ahora «Garras», la pieza de marcas de garra en la nuca — la
+fotografía más fuerte del lote nuevo. Para cambiarla, edita la ruta
+`assets/img/portfolio/<pieza>-{520,720,900}` en esa sección.
 
 ## 3. FAQ  ·  `index.html`, sección `#faq`
 

@@ -20,7 +20,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "assets" / "video" / "source" / "estudio.mp4"
 OUT = ROOT / "assets" / "video"
-POSTER_AT = "6.0"          # fotograma con la pieza centrada
+POSTER_AT = "5.5"          # fotograma con la pieza centrada
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 
@@ -31,8 +31,9 @@ def run(args):
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
 
-    # -an quita el audio, -vf scale normaliza a 576 px de ancho ya rotado.
-    common = ["-i", str(SRC), "-an", "-vf", "scale=576:-2"]
+    # -an quita el audio. scale=... nunca amplía: 'min(iw,576)' evita
+    # reescalar hacia arriba cuando el original ya es más pequeño.
+    common = ["-i", str(SRC), "-an", "-vf", "scale='min(576,iw)':-2"]
     run(common + ["-c:v", "libx264", "-profile:v", "main", "-crf", "32",
                   "-preset", "slow", "-pix_fmt", "yuv420p",
                   "-movflags", "+faststart", str(OUT / "estudio.mp4")])
@@ -42,7 +43,7 @@ def main():
 
     poster = OUT / "estudio-poster.jpg"
     run(["-ss", POSTER_AT, "-i", str(SRC), "-frames:v", "1",
-         "-vf", "scale=576:-2", str(poster)])
+         "-vf", "scale='min(576,iw)':-2", str(poster)])
     img = Image.open(poster).convert("RGB")
     img.save(OUT / "estudio-poster.avif", "AVIF", quality=55)
     img.save(OUT / "estudio-poster.webp", "WEBP", quality=74, method=6)
