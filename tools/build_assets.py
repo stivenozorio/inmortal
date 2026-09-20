@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Deriva los assets web de Inmortal Tatts a partir de los originales de marca.
+"""Deriva los assets web de marca (logo, simbolo, serpiente, social).
+
+Las fotografias del portafolio y del artista las prepara tools/build_portfolio.py.
 
 Entradas  : assets/img/source/*.jpg  (logo, simbolo llama/reloj, serpiente)
 Salidas   : assets/img/*.{avif,webp,jpg,png}
@@ -189,58 +191,6 @@ def build_social(word):
         print(f"  {name}.png  {size}x{size}")
 
 
-def build_artist_placeholder():
-    """Marco provisional del retrato del artista (se reemplaza por la foto real)."""
-    print("retrato del artista (provisional):")
-    w, h = 900, 1200
-    base = Image.new("RGB", (w, h), PRIMARY_BG)
-    g = Image.new("RGB", (w, h), PRIMARY_BG)
-    d = ImageDraw.Draw(g)
-    d.ellipse((-w * 0.35, h * 0.5, w * 0.95, h * 1.5), fill=BURGUNDY)
-    d.ellipse((w * 0.45, -h * 0.3, w * 1.5, h * 0.45), fill=DEEP_BG)
-    g = g.filter(ImageFilter.GaussianBlur(w * 0.2))
-    base = Image.blend(base, g, 0.5)
-    mark = Image.open(OUT / "mark.png")
-    mh = int(h * 0.3)
-    mr = mark.resize((round(mark.width * mh / mark.height), mh), Image.LANCZOS)
-    veil = mr.copy()
-    veil.putalpha(veil.split()[-1].point(lambda a: int(a * 0.16)))
-    base.paste(veil, ((w - mr.width) // 2, (h - mr.height) // 2), veil)
-    save_variants(base, "artist", [600, 900])
-
-
-def build_portfolio_placeholders():
-    """Marcos de portafolio provisionales: SOLO estructura, sin fotos de stock.
-
-    Se reemplazan colocando las fotografias reales con el mismo nombre en
-    assets/img/portfolio/. Ver CONTENIDO.md.
-    """
-    print("portafolio (marcos provisionales):")
-    pdir = OUT / "portfolio"
-    pdir.mkdir(exist_ok=True)
-    mark = Image.open(OUT / "mark.png")
-    rng = np.random.default_rng(11)
-    ratios = [(900, 1200), (900, 640), (900, 900), (900, 1350), (900, 700), (900, 1150)]
-    for i, (w, h) in enumerate(ratios, start=1):
-        base = Image.new("RGB", (w, h), PRIMARY_BG)
-        g = Image.new("RGB", (w, h), PRIMARY_BG)
-        d = ImageDraw.Draw(g)
-        d.ellipse((-w * 0.3, h * 0.55, w * 0.9, h * 1.6), fill=BURGUNDY)
-        d.ellipse((w * 0.55, -h * 0.25, w * 1.4, h * 0.5), fill=DEEP_BG)
-        g = g.filter(ImageFilter.GaussianBlur(w * 0.18))
-        base = Image.blend(base, g, 0.55)
-        mh = int(h * 0.26)
-        mr = mark.resize((round(mark.width * mh / mark.height), mh), Image.LANCZOS)
-        veil = mr.copy()
-        veil.putalpha(veil.split()[-1].point(lambda a: int(a * 0.14)))
-        base.paste(veil, ((w - mr.width) // 2, (h - mr.height) // 2), veil)
-        noise = rng.integers(0, 18, size=(h, w, 3), dtype=np.uint8)
-        base = Image.fromarray(np.clip(np.asarray(base).astype(np.int16) + noise - 9, 0, 255).astype(np.uint8))
-        for ext, kw in (("avif", dict(quality=52)), ("webp", dict(quality=72, method=6)), ("jpg", dict(quality=80, optimize=True))):
-            base.save(pdir / f"slot-{i:02d}.{ext}", ext.upper() if ext != "jpg" else "JPEG", **kw)
-        print(f"  portfolio/slot-{i:02d}.[avif|webp|jpg]  {w}x{h}")
-
-
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     word = build_logo()
@@ -248,8 +198,6 @@ def main():
     build_snake()
     build_grain()
     build_social(word)
-    build_artist_placeholder()
-    build_portfolio_placeholders()
     print("listo.")
 
 

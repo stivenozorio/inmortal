@@ -167,6 +167,9 @@
       <div class="gallery" id="gallery"></div>
 
       <p class="gallery__empty" id="galleryEmpty" hidden>No hay piezas en esta categoría todavía.</p>
+      <div class="gallery__more">
+        <button class="btn btn--ghost" id="galleryMore" type="button" hidden data-magnetic>Ver más piezas</button>
+      </div>
 
       <div class="section__foot" data-reveal>
         <p class="section__note">¿Viste algo que encaja con tu idea?</p>
@@ -181,9 +184,9 @@
     <div class="wrap blackwork__grid">
       <figure class="blackwork__art" data-reveal="clip">
         <picture data-parallax="0.06">
-          <source type="image/avif" srcset="assets/img/snake-wide-600.avif 600w, assets/img/snake-wide-900.avif 900w, assets/img/snake-wide-1200.avif 1200w" sizes="(min-width: 1024px) 52vw, 92vw">
-          <source type="image/webp" srcset="assets/img/snake-wide-600.webp 600w, assets/img/snake-wide-900.webp 900w, assets/img/snake-wide-1200.webp 1200w" sizes="(min-width: 1024px) 52vw, 92vw">
-          <img src="assets/img/snake-wide-900.jpg" width="1200" height="847" loading="lazy" decoding="async" alt="Serpiente ilustrada en trazo negro sobre círculo rojo, lenguaje visual de Inmortal Tatts.">
+          <source type="image/avif" srcset="assets/img/portfolio/blackout-pierna-520.avif 520w, assets/img/portfolio/blackout-pierna-900.avif 900w" sizes="(min-width: 860px) 50vw, 92vw">
+          <source type="image/webp" srcset="assets/img/portfolio/blackout-pierna-520.webp 520w, assets/img/portfolio/blackout-pierna-900.webp 900w" sizes="(min-width: 860px) 50vw, 92vw">
+          <img src="assets/img/portfolio/blackout-pierna-900.jpg" width="900" height="1200" loading="lazy" decoding="async" alt="Pierna cubierta en negro sólido con líneas orgánicas en reserva, estilo Black Work de Inmortal Tatts.">
         </picture>
       </figure>
 
@@ -232,12 +235,14 @@
         <a class="btn btn--ghost" data-reveal href="#cotizar" data-magnetic>Cuéntame tu idea</a>
       </div>
 
-      <!-- EDITABLE: sustituir artist-600/900.{avif,webp,jpg} por la fotografía real del artista -->
+      <!-- Foto real del estudio. Para cambiarla: deja la nueva en
+           assets/img/portfolio/source/, apúntala en ARTISTA dentro de
+           tools/build_portfolio.py y ejecuta el script. -->
       <figure class="artist__photo" data-reveal="right">
         <picture>
           <source type="image/avif" srcset="assets/img/artist-600.avif 600w, assets/img/artist-900.avif 900w" sizes="(min-width: 860px) 40vw, 92vw">
           <source type="image/webp" srcset="assets/img/artist-600.webp 600w, assets/img/artist-900.webp 900w" sizes="(min-width: 860px) 40vw, 92vw">
-          <img data-parallax="0.08" src="assets/img/artist-900.jpg" width="900" height="1200" loading="lazy" decoding="async" alt="Retrato del artista de Inmortal Tatts.">
+          <img data-parallax="0.08" src="assets/img/artist-900.jpg" width="900" height="1200" loading="lazy" decoding="async" alt="El artista de Inmortal Tatts tatuando un antebrazo bajo la luz roja del estudio.">
         </picture>
         <figcaption>Inmortal Tatts — Black Work / Tattoo Art</figcaption>
       </figure>
@@ -462,7 +467,7 @@
   <button class="lightbox__close" id="lbClose" type="button" aria-label="Cerrar">&#215;</button>
   <button class="lightbox__nav lightbox__nav--prev" id="lbPrev" type="button" aria-label="Anterior">&#8249;</button>
   <figure class="lightbox__figure">
-    <img id="lbImg" src="" alt="">
+    <picture id="lbPicture"><img id="lbImg" src="" alt=""></picture>
     <figcaption>
       <span class="lightbox__name" id="lbName"></span>
       <span class="lightbox__cat" id="lbCat"></span>

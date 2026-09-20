@@ -172,8 +172,26 @@
   })();
 
   /* ---------- 5. Portafolio + filtros ----------------------------------- */
+  /* Anchos disponibles de una pieza y ruta de su versión grande.
+     Las fotos antiguas sin `ws` siguen funcionando con un único archivo. */
+  function widthsOf(item) {
+    return (item.ws && item.ws.length) ? item.ws : [item.w || 900];
+  }
+  function lightboxSrcset(item, ext) {
+    var base = 'assets/img/portfolio/' + item.file;
+    return widthsOf(item).map(function (w) {
+      return base + '-' + w + '.' + ext + ' ' + w + 'w';
+    }).join(', ');
+  }
+  function fullSrc(item) {
+    var ws = widthsOf(item);
+    var ext = (item.ext || ['avif', 'webp', 'jpg']).slice(-1)[0];
+    return 'assets/img/portfolio/' + item.file + '-' + ws[ws.length - 1] + '.' + ext;
+  }
+
   var lightbox = (function () {
     var root = doc.getElementById('lightbox');
+    var picture = doc.getElementById('lbPicture');
     var img = doc.getElementById('lbImg');
     var name = doc.getElementById('lbName');
     var cat = doc.getElementById('lbCat');
@@ -190,10 +208,23 @@
       var item = list[index];
       if (!item) return;
       root.classList.remove('is-ready');
-      var src = 'assets/img/portfolio/' + item.file + '.' + (item.ext ? item.ext[item.ext.length - 1] : 'jpg');
+      // Se rehacen los <source> para que el navegador vuelva a elegir formato
+      // (cambiar srcset sobre el mismo nodo no siempre fuerza la reevaluación).
+      var exts = item.ext || ['avif', 'webp', 'jpg'];
+      picture.innerHTML = '';
+      ['avif', 'webp'].forEach(function (ext) {
+        if (exts.indexOf(ext) === -1) return;
+        var source = doc.createElement('source');
+        source.type = 'image/' + ext;
+        source.srcset = lightboxSrcset(item, ext);
+        picture.appendChild(source);
+      });
+      img = doc.createElement('img');
+      img.id = 'lbImg';
       img.onload = function () { root.classList.add('is-ready'); };
-      img.src = src;
+      img.src = fullSrc(item);
       img.alt = item.alt || item.name;
+      picture.appendChild(img);
       name.textContent = item.placeholder ? 'Espacio reservado' : item.name;
       cat.textContent = item.cat || '';
       count.textContent = (index + 1) + ' / ' + list.length;
@@ -216,7 +247,7 @@
     function close() {
       root.classList.remove('is-open', 'is-ready');
       scrollLock.off();
-      window.setTimeout(function () { root.hidden = true; img.src = ''; }, 350);
+      window.setTimeout(function () { root.hidden = true; picture.innerHTML = ''; }, 350);
       // preventScroll: devolver el foco a la pieza movía la página unos píxeles.
       if (lastFocus && lastFocus.focus) {
         try { lastFocus.focus({ preventScroll: true }); } catch (e) { lastFocus.focus(); }
@@ -267,6 +298,7 @@
     var grid = doc.getElementById('gallery');
     var filtersBox = doc.getElementById('filters');
     var empty = doc.getElementById('galleryEmpty');
+    var more = doc.getElementById('galleryMore');
     if (!grid) return;
 
     var data = Array.isArray(window.PORTFOLIO) ? window.PORTFOLIO : [];
@@ -286,10 +318,19 @@
     var current = 'all';
     var visible = data.slice();
 
+    // Tres columnas en escritorio, dos en tablet, una en móvil.
+    var SIZES = '(min-width: 1024px) 30vw, (min-width: 600px) 45vw, 92vw';
+
+    function srcset(item, ext) {
+      var base = 'assets/img/portfolio/' + item.file;
+      return widthsOf(item).map(function (w) {
+        return base + '-' + w + '.' + ext + ' ' + w + 'w';
+      }).join(', ');
+    }
+
     function tileFor(item, i) {
       var exts = item.ext || ['avif', 'webp', 'jpg'];
-      var base = 'assets/img/portfolio/' + item.file;
-      var fallback = base + '.' + exts[exts.length - 1];
+      var fallback = fullSrc(item);
 
       var btn = doc.createElement('button');
       btn.type = 'button';
@@ -299,8 +340,8 @@
       btn.setAttribute('aria-label', 'Ampliar: ' + (item.placeholder ? 'espacio reservado' : item.name));
 
       var html = '<picture>';
-      if (exts.indexOf('avif') > -1) html += '<source type="image/avif" srcset="' + base + '.avif">';
-      if (exts.indexOf('webp') > -1) html += '<source type="image/webp" srcset="' + base + '.webp">';
+      if (exts.indexOf('avif') > -1) html += '<source type="image/avif" sizes="' + SIZES + '" srcset="' + srcset(item, 'avif') + '">';
+      if (exts.indexOf('webp') > -1) html += '<source type="image/webp" sizes="' + SIZES + '" srcset="' + srcset(item, 'webp') + '">';
       html += '<img src="' + fallback + '" width="' + (item.w || 900) + '" height="' + (item.h || 1200) +
               '" loading="lazy" decoding="async" alt="' + (item.alt || item.name).replace(/"/g, '&quot;') + '"></picture>';
       html += '<span class="tile__veil"></span>';
@@ -316,17 +357,38 @@
       return btn;
     }
 
-    function paint() {
-      visible = current === 'all' ? data.slice() : data.filter(function (d) { return d.cat === current; });
-      grid.innerHTML = '';
-      visible.forEach(function (item, i) {
-        var tile = tileFor(item, i);
+    // Carga progresiva: la galería completa deja una página larguísima en
+    // móvil. Se muestran las primeras y el resto entra por tandas.
+    var PAGE = 12;
+    var shown = 0;
+
+    function append(from, to) {
+      visible.slice(from, to).forEach(function (item, i) {
+        var tile = tileFor(item, from + i);
         grid.appendChild(tile);
         if (reduced) tile.classList.add('is-visible');
         else observeReveal(tile);
       });
+      shown = Math.min(to, visible.length);
+      var left = visible.length - shown;
+      more.hidden = left <= 0;
+      more.textContent = 'Ver más piezas (' + left + ')';
+    }
+
+    function paint() {
+      visible = current === 'all' ? data.slice() : data.filter(function (d) { return d.cat === current; });
+      grid.innerHTML = '';
+      shown = 0;
+      append(0, PAGE);
       empty.hidden = visible.length > 0;
     }
+
+    more.addEventListener('click', function () {
+      var first = shown;
+      append(shown, shown + PAGE);
+      var tile = grid.children[first];
+      if (tile && tile.focus) tile.focus({ preventScroll: true });
+    });
 
     // El filtro sólo tiene sentido con dos categorías o más.
     if (cats.length > 1) {

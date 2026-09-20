@@ -508,6 +508,8 @@ body.is-ready .hero__cta{ animation:heroIn 1s var(--ease) 1.05s forwards; }
   background:rgba(11,15,24,.5);
 }
 .gallery__empty{ color:var(--muted); text-align:center; padding-block:2rem; }
+.gallery__more{ display:flex; justify-content:center; margin-top:clamp(1.5rem,4vw,2.5rem); }
+.gallery__more .btn{ min-width:260px; }
 [hidden]{ display:none !important; }
 
 .section__foot{
@@ -535,19 +537,14 @@ body.is-ready .hero__cta{ animation:heroIn 1s var(--ease) 1.05s forwards; }
   margin:0; position:relative; overflow:hidden;
   border:1px solid var(--line);
 }
-/* En la sección del estilo la ilustración se lee en clave Black Work:
-   luminosity la desatura contra el azul-negro y el rojo queda sólo como luz. */
 .blackwork__art{ background:var(--deep); }
-.blackwork__art img{ filter:brightness(.92) contrast(1.06); }
-@supports (mix-blend-mode:luminosity){
-  .blackwork__art img{ mix-blend-mode:luminosity; }
-}
+.blackwork__art img{ filter:contrast(1.04); }
 .blackwork__art::after{
   content:''; position:absolute; inset:0;
   background:
-    linear-gradient(200deg, rgba(242,1,50,.16) 0%, transparent 46%),
-    linear-gradient(180deg, rgba(11,15,24,.22) 0%, transparent 34%, rgba(11,15,24,.45) 100%),
-    radial-gradient(78% 72% at 50% 46%, transparent 34%, rgba(11,15,24,.55) 100%);
+    linear-gradient(200deg, rgba(242,1,50,.14) 0%, transparent 46%),
+    linear-gradient(180deg, rgba(11,15,24,.30) 0%, transparent 32%, rgba(11,15,24,.55) 100%),
+    radial-gradient(70% 62% at 48% 48%, transparent 18%, rgba(11,15,24,.78) 100%);
   pointer-events:none;
 }
 .blackwork__title{ margin-bottom:1.6rem; }
@@ -810,13 +807,15 @@ body.nav-open .wa-float{ opacity:0; transform:translateY(120%); pointer-events:n
   margin:0; grid-column:2; display:flex; flex-direction:column; align-items:center; gap:1rem;
   min-width:0;
 }
+.lightbox__figure picture{ display:contents; }
 .lightbox__figure img{
   max-width:100%; max-height:74vh; width:auto; object-fit:contain;
   border:1px solid var(--line);
   opacity:0; transform:scale(.985);
   transition:opacity .5s var(--ease), transform .5s var(--ease);
 }
-.lightbox.is-ready .lightbox__figure img{ opacity:1; transform:none; }
+.lightbox.is-ready .lightbox__figure picture{ display:contents; }
+.lightbox__figure img{ opacity:1; transform:none; }
 .lightbox__figure figcaption{
   display:flex; align-items:center; gap:.9rem; flex-wrap:wrap; justify-content:center;
   font-family:var(--font-display); font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
