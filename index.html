@@ -183,10 +183,12 @@
     <div class="blackwork__bg" aria-hidden="true"></div>
     <div class="wrap blackwork__grid">
       <figure class="blackwork__art" data-reveal="clip">
+        <!-- Cuando haya una foto de Black Work, sustituye esta ilustración por
+             la pieza: assets/img/portfolio/<nombre>-{520,720,900}.{avif,webp,jpg} -->
         <picture data-parallax="0.06">
-          <source type="image/avif" srcset="assets/img/portfolio/blackout-pierna-520.avif 520w, assets/img/portfolio/blackout-pierna-900.avif 900w" sizes="(min-width: 860px) 50vw, 92vw">
-          <source type="image/webp" srcset="assets/img/portfolio/blackout-pierna-520.webp 520w, assets/img/portfolio/blackout-pierna-900.webp 900w" sizes="(min-width: 860px) 50vw, 92vw">
-          <img src="assets/img/portfolio/blackout-pierna-900.jpg" width="900" height="1200" loading="lazy" decoding="async" alt="Pierna cubierta en negro sólido con líneas orgánicas en reserva, estilo Black Work de Inmortal Tatts.">
+          <source type="image/avif" srcset="assets/img/snake-wide-600.avif 600w, assets/img/snake-wide-900.avif 900w, assets/img/snake-wide-1200.avif 1200w" sizes="(min-width: 860px) 50vw, 92vw">
+          <source type="image/webp" srcset="assets/img/snake-wide-600.webp 600w, assets/img/snake-wide-900.webp 900w, assets/img/snake-wide-1200.webp 1200w" sizes="(min-width: 860px) 50vw, 92vw">
+          <img src="assets/img/snake-wide-900.jpg" width="1200" height="847" loading="lazy" decoding="async" alt="Serpiente ilustrada en trazo negro sobre círculo rojo, lenguaje visual de Inmortal Tatts.">
         </picture>
       </figure>
 
@@ -235,22 +237,16 @@
         <a class="btn btn--ghost" data-reveal href="#cotizar" data-magnetic>Cuéntame tu idea</a>
       </div>
 
-      <!-- Fotos reales del estudio. Para cambiarlas: deja las nuevas en
+      <!-- EDITABLE: marco provisional. Deja las fotos reales en
            assets/img/portfolio/source/, apúntalas en ARTISTA dentro de
-           tools/build_portfolio.py y ejecuta el script. -->
+           tools/build_portfolio.py y ejecuta el script. Para la segunda foto
+           superpuesta, duplica la figura con la clase artist__photo--sub. -->
       <div class="artist__media" data-reveal="right">
         <figure class="artist__photo artist__photo--main">
           <picture>
             <source type="image/avif" srcset="assets/img/artist-600.avif 600w, assets/img/artist-900.avif 900w" sizes="(min-width: 860px) 40vw, 92vw">
             <source type="image/webp" srcset="assets/img/artist-600.webp 600w, assets/img/artist-900.webp 900w" sizes="(min-width: 860px) 40vw, 92vw">
-            <img data-parallax="0.08" src="assets/img/artist-900.jpg" width="900" height="1200" loading="lazy" decoding="async" alt="El artista de Inmortal Tatts tatuando un antebrazo bajo la luz roja del estudio.">
-          </picture>
-        </figure>
-        <figure class="artist__photo artist__photo--sub">
-          <picture>
-            <source type="image/avif" srcset="assets/img/artist-sub-591.avif 591w" sizes="(min-width: 860px) 20vw, 46vw">
-            <source type="image/webp" srcset="assets/img/artist-sub-591.webp 591w" sizes="(min-width: 860px) 20vw, 46vw">
-            <img src="assets/img/artist-sub-591.jpg" width="591" height="1051" loading="lazy" decoding="async" alt="El artista trabajando un lettering en el antebrazo de un cliente.">
+            <img data-parallax="0.08" src="assets/img/artist-900.jpg" width="900" height="1200" loading="lazy" decoding="async" alt="Retrato del artista de Inmortal Tatts.">
           </picture>
         </figure>
         <p class="artist__credit">Inmortal Tatts — Black Work / Tattoo Art</p>
@@ -306,7 +302,12 @@
     </div>
   </section>
 
-  <!-- Interludio: pieza terminada en movimiento -->
+  <!-- INTERLUDIO EN VIDEO — desactivado: no hay video cargado.
+       Para reactivarlo: deja el video en assets/video/source/estudio.mp4,
+       ejecuta `python3 tools/build_video.py` y quita este comentario.
+       Los estilos (.reel) y el script siguen en su sitio.
+
+  <!- - Interludio: pieza terminada en movimiento - ->
   <section class="reel" aria-label="Pieza terminada en movimiento">
    <div class="wrap reel__inner">
     <div class="reel__copy" data-reveal>
@@ -327,6 +328,7 @@
     </figure>
    </div>
   </section>
+  -->
 
   <!-- 14 — Cotización -->
   <section class="section quote" id="cotizar">

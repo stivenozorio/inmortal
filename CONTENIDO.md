@@ -7,28 +7,28 @@ Cada punto pendiente está marcado en el código con `<!-- EDITABLE: ... -->`.
 
 ---
 
-## 1. Fotografías del portafolio  ·  hecho
+## 1. Fotografías del portafolio  ·  pendiente
 
-Publicadas **32 piezas** en cuatro categorías: Black Work, Black & Grey,
-Ornamental y Color. Todo el material enviado está en uso.
+Las fotos anteriores se eliminaron a petición tuya para subir otras. La
+galería muestra ahora seis marcos provisionales hechos con los gráficos de
+marca, etiquetados «Próximamente»: no hay fotos de stock ni piezas
+inventadas.
 
-Dos decisiones que conviene que revises:
+Para publicar las nuevas:
 
-- **Categoría «Color».** El encargo listaba Black Work, Black & Grey,
-  Abstract, Ornamental y Custom, pero en el material hay piezas a color
-  (escarabajo, criatura, pecho japonés, manga japonesa) y no hay nada
-  abstracto ni claramente «custom». La regla era mostrar solo categorías
-  reales, así que se creó Color y se dejaron fuera Abstract y Custom.
-- **Marca de agua.** Cuatro fotos llevan `@carlosherrera.art` incrustado.
-  Se dejaron tal cual: quitar el crédito de alguien no es una decisión que
-  tome el sitio. Si esa cuenta es tuya y prefieres publicarlas sin marca,
-  envía los originales limpios.
+1. Deja los originales en `assets/img/portfolio/source/` (sirven tal cual
+   salen del móvil).
+2. Añade una línea por pieza a la tabla `CATALOGO` de
+   `tools/build_portfolio.py`.
+3. Ejecuta `python3 tools/build_portfolio.py` y pega en
+   `assets/js/portfolio-data.js` la lista que imprime; borra de ahí las
+   líneas `slot-0x` de los marcos provisionales.
 
-Las tomas repetidas de una misma pieza se publicaron con nombre propio
-(«Dragón · de perfil», «Dragón · detalle», «Guerrera azteca · detalle»…)
-para que se lean como documentación de un proyecto grande y no como una
-repetición. Si prefieres una galería más corta, basta con borrar esas
-líneas de `assets/js/portfolio-data.js`.
+Categorías sugeridas: `Black Work`, `Black & Grey`, `Ornamental`, `Color`,
+`Custom`. Solo aparecen en el filtro las que tengan piezas publicadas.
+
+Las fotos borradas siguen en el historial de Git por si hiciera falta
+recuperar alguna.
 
 ## 2. El artista  ·  `index.html`, sección `#artista`
 
@@ -39,21 +39,27 @@ líneas de `assets/js/portfolio-data.js`.
 | Especialidad | «Black Work» |
 | Enfoque | «Diseño custom» |
 | Base (ciudad / estudio) | «Chile» |
-| Fotografías | listas: la sesión bajo la luz roja y el retrato de perfil |
+| Fotografía | **pendiente**, marco provisional |
 
-Si prefieres un retrato tuyo mirando a cámara, se cambia en `ARTISTA`
-dentro de `tools/build_portfolio.py`.
+La foto se prepara apuntándola en `ARTISTA` dentro de
+`tools/build_portfolio.py`. Admite dos: la principal y una segunda que se
+monta superpuesta (duplica la figura con la clase `artist__photo--sub`).
 
 No se incluyeron premios, años de experiencia, certificaciones, clientes ni
 publicaciones: nada de eso estaba disponible y no se inventa.
 
-## 2b. Video del estudio  ·  hecho
+## 2b. Interludio en video  ·  desactivado
 
-El video de la espalda completa es ahora un interludio entre Proceso y
-Cotización: vertical, en silencio, en bucle y solo mientras está a la
-vista. Texto de apoyo: «Espalda completa · negro sólido y color · Una pieza
-de varias sesiones». **Si el número de sesiones no es exacto, cámbialo**
-(`index.html`, clase `.reel__note`).
+La sección quedó comentada en `index.html` al eliminar el video. Los
+estilos y el script siguen en su sitio: para reactivarla, deja el video en
+`assets/video/source/estudio.mp4`, ejecuta `python3 tools/build_video.py` y
+quita el comentario que empieza en «INTERLUDIO EN VIDEO — desactivado».
+
+## 2c. Sección Black Work  ·  `index.html`, `#black-work`
+
+Vuelve a mostrar la ilustración de la serpiente. El encargo pedía ahí una
+fotografía grande: cuando tengas una pieza de Black Work que te guste,
+cámbiala (hay un comentario en el código indicando dónde).
 
 ## 3. FAQ  ·  `index.html`, sección `#faq`
 
