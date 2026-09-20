@@ -525,41 +525,59 @@
     });
   })();
 
-  /* ---------- 7b. Interludio en video ------------------------------------ */
-  (function reel() {
-    var video = doc.getElementById('reelVideo');
-    var play = doc.getElementById('reelPlay');
-    if (!video) return;
+  /* ---------- 7b. Interludios en video ------------------------------------
+     La página puede llevar varios (uno por pieza terminada): se buscan por
+     clase, no por id, para que cada .reel sea independiente. */
+  (function reels() {
+    var sections = doc.querySelectorAll('.reel');
+    if (!sections.length) return;
 
     var conn = navigator.connection || {};
     var frugal = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
 
-    function start() {
-      video.preload = 'auto';
-      var p = video.play();
-      if (p && p.catch) p.catch(function () { play.hidden = false; });
-    }
+    Array.prototype.forEach.call(sections, function (section) {
+      var video = section.querySelector('.reel__video');
+      var play = section.querySelector('.reel__play');
+      if (!video || !play) return;
+      var autoTried = false;
 
-    // Con movimiento reducido o ahorro de datos no se reproduce solo:
-    // queda el póster y un botón para verlo a voluntad.
-    if (reduced || frugal) {
-      play.hidden = false;
+      function start() {
+        video.preload = 'auto';
+        var p = video.play();
+        if (p && p.catch) p.catch(function () { play.hidden = false; });
+      }
+
+      // El botón manual tiene que existir SIEMPRE: el autoplay lo puede
+      // bloquear cualquier navegador (modo de bajo consumo de iOS, el
+      // permiso "Auto-Play" de Safari en "Nunca", ahorro de datos…), no
+      // solo cuando aquí detectamos movimiento reducido o red lenta.
       play.addEventListener('click', function () {
         play.hidden = true;
         video.controls = true;
         start();
       });
-      return;
-    }
 
-    if (!('IntersectionObserver' in window)) { start(); return; }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) start();
-        else if (!video.paused) video.pause();
-      });
-    }, { threshold: 0.25 });
-    io.observe(video);
+      // Con movimiento reducido o ahorro de datos no se intenta reproducir
+      // solo: queda el póster y el botón, listo para reproducir a voluntad.
+      if (reduced || frugal) {
+        play.hidden = false;
+        return;
+      }
+
+      if (!('IntersectionObserver' in window)) { start(); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            // Un solo intento automático: si el navegador lo bloquea, se
+            // deja el botón visible en vez de reintentar en cada scroll.
+            if (!autoTried) { autoTried = true; start(); }
+          } else if (!video.paused) {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.25 });
+      io.observe(video);
+    });
   })();
 
   /* ---------- 8. WhatsApp flotante y año -------------------------------- */

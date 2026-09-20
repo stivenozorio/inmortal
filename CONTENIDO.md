@@ -57,16 +57,35 @@ monta superpuesta).
 No se incluyeron premios, años de experiencia, certificaciones, clientes ni
 publicaciones: nada de eso estaba disponible y no se inventa.
 
-## 2b. Interludio en video  ·  hecho
+## 2b. Interludios en video  ·  hecho, cuatro piezas
 
-Entre Proceso y Cotización va el video de la espalda completa (negro
-sólido, estructura ornamental y peonías a color), en silencio, en bucle y
-solo mientras está a la vista. El texto dice «Una pieza de varias
-sesiones»: si el número real de sesiones es otro, ajústalo en
-`index.html`, clase `.reel__note`.
+Se reparten por toda la página, no solo entre Proceso y Cotización:
 
-Para cambiar el video: deja el nuevo en `assets/video/source/estudio.mp4`
-y ejecuta `python3 tools/build_video.py`.
+| Sección | Dónde va | Pieza |
+|---|---|---|
+| «Pulpo en jeroglíficos» | tras el Portafolio, antes de Black Work | costillas, negro y gris |
+| «Espalda completa» | tras Proceso, antes de Cotización | espalda, negro y color |
+| «Manga a color» | tras el FAQ, antes de Instagram | criatura y rostro, a color |
+| «Manga en negro» | tras Instagram, antes del CTA final | manga completa, negro sólido |
+
+Todos en silencio, en bucle, y solo se reproducen (y solo se descargan)
+mientras están a la vista. Si el navegador bloquea el autoplay —modo de
+bajo consumo, el permiso "Auto-Play" de Safari en "Nunca", ahorro de
+datos— aparece un botón para reproducir a voluntad.
+
+**Sobre «Manga en negro»:** el clip original mostraba, en algunos
+encuadres, el logo de otra marca en la ropa de la persona tatuada. Se
+recortó a los seis segundos centrales (donde solo se ve el brazo, sin la
+prenda) para que el logo no aparezca en ningún momento del bucle.
+
+El texto de «Espalda completa» dice «Una pieza de varias sesiones»: si el
+número real de sesiones es otro, ajústalo en `index.html`, clase
+`.reel__note`.
+
+Para cambiar o añadir un video: deja el original en
+`assets/video/source/`, añade su fila a `VIDEOS` en `tools/build_video.py`
+(con el recorte y el segundo del póster que mejor se vea) y ejecuta el
+script.
 
 ## 2c. Sección Black Work  ·  `index.html`, `#black-work`  ·  hecho
 

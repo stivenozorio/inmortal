@@ -23,8 +23,8 @@ assets/
   img/                     Derivados web (logo, símbolo, serpiente, social)
   img/portfolio/source/    Fotografías originales, tal como llegan del móvil
   img/portfolio/           Versiones web (520 / 720 / 900 px en AVIF y WebP)
-  video/source/            Video original del estudio
-  video/                   Video listo para web (MP4 + WebM + póster)
+  video/source/            Videos originales, tal como llegan del móvil
+  video/                   Videos listos para web (MP4 + WebM + póster)
 tools/build_portfolio.py   Prepara las fotos del portafolio y del artista
 tools/build_video.py       Prepara el video del interludio
 tools/build_assets.py      Regenera los derivados de marca
@@ -81,16 +81,28 @@ oculta.
 Para cambiar la fotografía del artista, apunta otra en `ARTISTA` dentro del
 mismo script.
 
-## El interludio en video
+## Los interludios en video
 
-Entre Proceso y Cotización va una pieza terminada en movimiento
-(`assets/video/`). Se reproduce sola, **en silencio y en bucle**, solo
-mientras está a la vista, y no se descarga hasta ese momento
-(`preload="none"`). Con `prefers-reduced-motion` o ahorro de datos activos
-no se reproduce: queda el póster y un botón para verlo a voluntad.
+Cuatro piezas terminadas en movimiento repartidas por la página
+(`assets/video/`), cada una en su propia sección `.reel`. Cada una se
+reproduce sola, **en silencio y en bucle**, solo mientras está a la vista,
+y no se descarga hasta ese momento (`preload="none"`). Con
+`prefers-reduced-motion` o ahorro de datos activos no se reproduce: queda
+el póster y un botón para verlo a voluntad — y ese botón funciona también
+si el navegador bloqueó el autoplay por su cuenta (modo de bajo consumo de
+iOS, el permiso "Auto-Play" de Safari en "Nunca"…).
 
-Para cambiar el video, deja el nuevo en `assets/video/source/estudio.mp4` y
-ejecuta:
+Para añadir o cambiar un video, deja el original en
+`assets/video/source/` y añade (o edita) su fila en la tabla `VIDEOS` de
+`tools/build_video.py`:
+
+```python
+VIDEOS = [
+    ("archivo.mp4", "slug", "inicio_del_recorte", "duración_o_''", "segundo_del_póster"),
+]
+```
+
+y ejecuta:
 
 ```bash
 pip install imageio-ffmpeg
@@ -98,8 +110,9 @@ python3 tools/build_video.py
 ```
 
 El script quita el audio, no amplía el video si el original ya es más
-pequeño que el ancho objetivo, genera MP4 y WebM, y saca el póster del
-segundo indicado en `POSTER_AT` (ajústalo si el mejor fotograma es otro).
+pequeño que el ancho objetivo, recorta al tramo indicado, genera MP4 y
+WebM, y saca el póster del segundo indicado. Cada sección `.reel` en
+`index.html` referencia su propio `<slug>.mp4` / `.webm` / `-poster.*`.
 
 ## Regenerar los assets derivados
 

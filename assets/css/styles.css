@@ -686,17 +686,30 @@ body.is-ready .hero__cta{ animation:heroIn 1s var(--ease) 1.05s forwards; }
   font-family:var(--font-display); font-weight:600;
   font-size:.64rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted);
 }
+/* Círculo rojo sólido, como el botón flotante de WhatsApp: tiene que
+   distinguirse de un vistazo sobre cualquier fotograma del póster, porque
+   aparece siempre que el navegador bloquea el autoplay (modo de bajo
+   consumo, el permiso "Auto-Play" en "Nunca", ahorro de datos…). */
 .reel__play{
   position:absolute; inset:0; margin:auto;
-  width:150px; height:52px;
-  background:rgba(11,15,24,.6); color:var(--text);
-  border:1px solid var(--line-red); border-radius:2px;
-  font-family:var(--font-display); font-size:.72rem; font-weight:700;
-  letter-spacing:.2em; text-transform:uppercase; cursor:pointer;
-  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
-  transition:border-color .3s var(--ease), color .3s var(--ease);
+  width:72px; height:72px;
+  display:grid; place-content:center;
+  background:var(--red); color:var(--text);
+  border:0; border-radius:50%;
+  cursor:pointer;
+  box-shadow:0 12px 34px rgba(11,15,24,.55), 0 0 0 10px rgba(242,1,50,.16);
+  transition:transform .3s var(--ease), background-color .3s var(--ease);
 }
-.reel__play:hover{ border-color:var(--red); color:var(--red); }
+.reel__play svg{ transform:translateX(2px); }
+.reel__play:hover{ background:var(--red-2); transform:scale(1.06); }
+
+/* Cuatro interludios se reparten por la página: alternar el lado de la
+   imagen les da variedad sin romper el patrón. Mismo punto de quiebre que
+   .reel__inner, donde copy y video pasan a ir uno junto al otro. */
+@media (min-width:860px){
+  .reel--alt .reel__copy{ order:2; }
+  .reel--alt .reel__media{ order:1; }
+}
 
 /* ---------- 15. COTIZACIÓN ----------------------------------------------- */
 .quote{ background:var(--bg); overflow:hidden; }
