@@ -38,7 +38,7 @@ líneas de `assets/js/portfolio-data.js`.
 | Historia / filosofía | texto base, reescríbelo en primera persona |
 | Especialidad | «Black Work» |
 | Enfoque | «Diseño custom» |
-| Base (ciudad / estudio) | «Colombia» |
+| Base (ciudad / estudio) | «Chile» |
 | Fotografías | listas: la sesión bajo la luz roja y el retrato de perfil |
 
 Si prefieres un retrato tuyo mirando a cámara, se cambia en `ARTISTA`
@@ -63,9 +63,9 @@ términos generales. Ajústalas a tus tarifas y a tu protocolo real.
 Si tienes ubicación física y horarios, añade una pregunta más: hoy no
 aparecen porque no se conocen.
 
-## 4. Ubicación del hero  ·  `index.html`, `.hero__where`
+## 4. Ubicación  ·  `index.html`, `.hero__where` y `#artista`
 
-Dice «Colombia». Cámbialo por la ciudad o el nombre del estudio.
+Dice «Chile». Cámbialo por la ciudad o el nombre del estudio.
 
 ## 5. Dominio y metadatos  ·  `index.html`, `<head>`
 
