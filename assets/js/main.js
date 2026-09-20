@@ -10,6 +10,30 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
+  /* Bloqueo de scroll compartido por intro, menú y lightbox.
+     En iOS `overflow:hidden` sobre el body no detiene el scroll: hay que
+     fijarlo y devolver la posición al liberarlo. */
+  var scrollLock = (function () {
+    var y = 0, depth = 0;
+    return {
+      on: function () {
+        if (depth++ > 0) return;
+        y = window.pageYOffset || doc.documentElement.scrollTop || 0;
+        body.style.top = -y + 'px';
+        body.classList.add('is-locked');
+      },
+      off: function () {
+        if (depth === 0 || --depth > 0) return;
+        body.classList.remove('is-locked');
+        body.style.top = '';
+        // 'instant': con scroll-behavior:smooth, un scrollTo normal se anima y
+        // cualquier otro desplazamiento lo interrumpe a medio camino.
+        try { window.scrollTo({ top: y, left: 0, behavior: 'instant' }); }
+        catch (e) { window.scrollTo(0, y); }
+      }
+    };
+  })();
+
   var WA_NUMBER = '573214074562';
   var WA_BASE_TEXT = 'Hola, Inmortal Tatts. Quiero cotizar un tatuaje. Me gustaría recibir información sobre disponibilidad, precio y proceso de reserva.';
 
@@ -25,10 +49,11 @@
     }
     try { sessionStorage.setItem('it-intro', '1'); } catch (e) {}
 
-    body.classList.add('is-locked');
+    scrollLock.on();
     window.setTimeout(function () {
       body.classList.add('is-ready');
-      body.classList.remove('is-loading', 'is-locked');
+      body.classList.remove('is-loading');
+      scrollLock.off();
     }, 3400);
   })();
 
@@ -48,9 +73,12 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
+    var navOpen = false;
     function setNav(open) {
+      if (open === navOpen) return;
+      navOpen = open;
       body.classList.toggle('nav-open', open);
-      body.classList.toggle('is-locked', open);
+      if (open) scrollLock.on(); else scrollLock.off();
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
     }
@@ -58,7 +86,15 @@
       setNav(!body.classList.contains('nav-open'));
     });
     links.forEach(function (a) {
-      a.addEventListener('click', function () { setNav(false); });
+      a.addEventListener('click', function (e) {
+        var target = doc.querySelector(a.getAttribute('href'));
+        setNav(false);                       // libera el scroll primero
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+          history.replaceState(null, '', a.getAttribute('href'));
+        }
+      });
     });
     doc.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && body.classList.contains('nav-open')) {
@@ -171,7 +207,7 @@
       index = i;
       lastFocus = doc.activeElement;
       root.hidden = false;
-      body.classList.add('is-locked');
+      scrollLock.on();
       render();
       window.requestAnimationFrame(function () { root.classList.add('is-open'); });
       btnClose.focus();
@@ -179,9 +215,12 @@
 
     function close() {
       root.classList.remove('is-open', 'is-ready');
-      body.classList.remove('is-locked');
+      scrollLock.off();
       window.setTimeout(function () { root.hidden = true; img.src = ''; }, 350);
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
+      // preventScroll: devolver el foco a la pieza movía la página unos píxeles.
+      if (lastFocus && lastFocus.focus) {
+        try { lastFocus.focus({ preventScroll: true }); } catch (e) { lastFocus.focus(); }
+      }
     }
 
     function step(dir) {
